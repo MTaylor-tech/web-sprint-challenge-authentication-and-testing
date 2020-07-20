@@ -72,7 +72,34 @@ describe("authentication integration tests", ()=> {
     expect(res.headers["content-type"]).toBe("application/json; charset=utf-8")
     expect(res.body.message).toBe("Welcome janedoe!")
     expect(res.headers["set-cookie"]).toBeDefined()
+    const token = res.headers["set-cookie"][0].split(";")[0].split("=")[1]
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    expect(decoded.username).toBe("janedoe")
+  })
+})
 
-    console.log(res.headers)
+describe("jokes api integration tests", ()=> {
+  it("GET /api/jokes FAIL (not logged in)", async ()=> {
+    const res = await supertest(server).get("/api/jokes")
+    expect(res.statusCode).toBe(401)
+    expect(res.headers["content-type"]).toBe("application/json; charset=utf-8")
+    expect(res.body.message).toBe("Not authorized")
+  })
+
+  it("GET /api/jokes", async ()=> {
+    const res_login = await supertest(server)
+      .post("/api/auth/login")
+      .send({ username: "janedoe", password: "abc12345" })
+    const res = await supertest(server)
+      .get("/api/jokes")
+      .set("Authorization", `Bearer ${res_login.headers["set-cookie"]}`)
+    expect(res.statusCode).toBe(200)
+    expect(res.headers["content-type"]).toBe("application/json; charset=utf-8")
+    expect(res.body).toHaveLength(20)
+    const sample_joke = {
+      id: '0189hNRf2g',
+      joke: "I'm tired of following my dreams. I'm just going to ask them where they are going and meet up with them later."
+    }
+    expect(res.body[0]).toEqual(sample_joke)
   })
 })

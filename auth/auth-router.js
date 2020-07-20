@@ -50,7 +50,7 @@ router.post("/login", async (req, res, next) => {
 			username: user.username
 		}
 
-		res.cookie("token", jwt.sign(payload, process.env.JWT_SECRET))
+		res.cookie("token", jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h'}))
 
 		res.json({
 			message: `Welcome ${user.username}!`,

@@ -11,10 +11,12 @@ module.exports = (req, res, next) => {
   }
 
   try {
-    const token = req.cookies.token
-    if (!token) {
+
+    if (!req.headers || !req.headers.authorization) {
       return res.status(401).json(authError)
     }
+
+    const token = req.headers.authorization.split(";")[0].split("=")[1]
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
