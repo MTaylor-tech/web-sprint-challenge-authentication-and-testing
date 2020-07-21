@@ -12,7 +12,20 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+server.get("/api", (req, res) => {
+	res.json({
+		message: "Welcome to our API",
+	})
+})
+
 server.use('/api/auth', authRouter);
 server.use('/api/jokes', authenticate, jokesRouter);
+
+server.use((err, req, res, next) => {
+	console.log(err)
+	res.status(500).json({
+		message: "Something went wrong",
+	})
+})
 
 module.exports = server;

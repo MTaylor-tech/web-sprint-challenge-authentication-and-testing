@@ -26,11 +26,21 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 
 1. Differences between using _sessions_ or _JSON Web Tokens_ for authentication.
 
+Sessions rely on the server storing information about the users that have been authenticated so that they can be authorized to access certain data. JWTs are stored on the client, but are signed by the server so that they are immutable, and passed with any request that requires authorization. JWTs allow for authorization across multiple servers that use the same secret for signing and decoding the JWTs. Sessions are not available cross-server.
+
 2. What does `bcrypt` do to help us store passwords in a secure manner.
+
+BCrypt encrypts the password by mathematically combining it with "salt" data to make a "hash" value that can only be decoded by the server. This prevents ne'er-do-wells who gain access to the hashed database of passwords from being able to easily decode the passwords and use them.
 
 3. How are unit tests different from integration and end-to-end testing.
 
+Unit tests are created to test discreet functions and use-cases of the code. Integration testing combines unit tests to allow for a bigger picture of the software and to test for all of the use-cases.
+
 4. How _Test Driven Development_ changes the way we write applications and tests.
+
+Test Driven Development requires that the developer plans out functionality by writing the tests first, determining the exact output that they will expect from the software before writing the code to fulfill those tests. This makes for cleaner code with fewer mistakes and ensures better test coverage of the software.
+
+
 
 You are expected to be able to answer questions in these areas. Your responses contribute to your Sprint Challenge grade.
 
@@ -49,10 +59,10 @@ You are expected to be able to answer questions in these areas. Your responses c
 
 Your finished project must include all of the following requirements:
 
-- [ ] An authentication workflow with functionality for account creation and login implemented inside `/auth/auth-router.js`. A `user` has `username` and `password`. Both properties are required.
-- [ ] Middleware used to restrict access to resources for non authenticated requests. Use the file: `./auth/authenticate-middleware.js` as a starting point.
-- [ ] Configuration for running tests using `Jest`.
-- [ ] A **minimum o 2 tests** per API endpoint.
+- [x] An authentication workflow with functionality for account creation and login implemented inside `/auth/auth-router.js`. A `user` has `username` and `password`. Both properties are required.
+- [x] Middleware used to restrict access to resources for non authenticated requests. Use the file: `./auth/authenticate-middleware.js` as a starting point.
+- [x] Configuration for running tests using `Jest`.
+- [x] A **minimum o 2 tests** per API endpoint.
 
 **Note**: the database already has the users table, but if you run into issues, the migrations are available.
 
